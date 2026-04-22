@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>极简相机 | 轻量全画幅</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 引入 Swiper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <!-- 引入 Framer Motion -->
+    <script src="https://cdn.jsdelivr.net/npm/framer-motion@11.0.0/dist/framer-motion.min.js"></script>
+    <!-- 配置 Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#F97316',
+                        background: '#FFFFFF',
+                        surface: '#F0F2F5',
+                        border: '#D1D5DB',
+                        text: '#374151',
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    <!-- 自定义样式 -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFFFFF;
+            color: #374151;
+        }
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F0F2F5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D1D5DB;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9CA3AF;
+        }
+    </style>
+    <!-- 引入 Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="font-inter bg-background text-text">
+    <div id="root">
+        <!-- 导航栏 -->
+        <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
+            <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+                <div class="text-xl font-semibold">CAMERA</div>
+                
+                <!-- 桌面导航 -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-text hover:text-primary transition-colors">产品</a>
+                    <a href="#" class="text-text hover:text-primary transition-colors">购买</a>
+                    <a href="#" class="text-text hover:text-primary transition-colors">关于</a>
+                </nav>
+                
+                <!-- 移动端菜单按钮 -->
+                <button id="menu-toggle" class="md:hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- 移动端菜单 -->
+            <div id="mobile-menu" class="md:hidden bg-white border-t border-border hidden">
+                <div class="container mx-auto px-4 py-4 flex flex-col space-y-4">
+                    <a href="#" class="text-text hover:text-primary transition-colors py-2">产品</a>
+                    <a href="#" class="text-text hover:text-primary transition-colors py-2">购买</a>
+                    <a href="#" class="text-text hover:text-primary transition-colors py-2">关于</a>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Hero 首屏 -->
+            <section class="pt-32 pb-20 md:pt-40 md:pb-32">
+                <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/2 mb-12 md:mb-0" data-aos="fade-up">
+                        <h1 class="text-4xl md:text-5xl font-bold mb-4">极简相机</h1>
+                        <p class="text-lg md:text-xl text-text/80 mb-8">轻量全画幅，口袋里的创作利器</p>
+                        <div class="flex space-x-4">
+                            <button class="px-8 py-3 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">立即预约</button>
+                            <button class="px-8 py-3 border border-border rounded-full hover:border-primary hover:text-primary transition-colors">查看详情</button>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2" data-aos="fade-up">
+                        <div class="relative">
+                            <video autoplay muted loop controls class="w-full h-auto rounded-lg">
+                                <source src="./网页图片/b9081bd288b7105ddb14cabeeaad2dab.mp4" type="video/mp4">
+                                您的浏览器不支持视频播放。
+                            </video>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 核心卖点区 -->
+            <section class="py-20 bg-surface">
+                <div class="container mx-auto px-4">
+                    <div class="max-w-3xl mx-auto text-center mb-16" data-aos="fade-up">
+                        <h2 class="text-3xl font-bold mb-4">核心优势</h2>
+                        <p class="text-text/80">为创作者打造的极致体验</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div class="bg-white p-8 rounded-lg border border-border hover:shadow-sm transition-shadow" data-aos="fade-up">
+                            <div class="text-3xl mb-4">📷</div>
+                            <h3 class="text-lg font-semibold mb-2">全画幅传感器</h3>
+                            <p class="text-text/70">4500万像素，出色画质</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-lg border border-border hover:shadow-sm transition-shadow" data-aos="fade-up" data-aos-delay="100">
+                            <div class="text-3xl mb-4">🎥</div>
+                            <h3 class="text-lg font-semibold mb-2">4K视频</h3>
+                            <p class="text-text/70">60fps，专业级视频录制</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-lg border border-border hover:shadow-sm transition-shadow" data-aos="fade-up" data-aos-delay="200">
+                            <div class="text-3xl mb-4">⚡</div>
+                            <h3 class="text-lg font-semibold mb-2">快速对焦</h3>
+                            <p class="text-text/70">0.05秒极速对焦</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-lg border border-border hover:shadow-sm transition-shadow" data-aos="fade-up" data-aos-delay="300">
+                            <div class="text-3xl mb-4">🔋</div>
+                            <h3 class="text-lg font-semibold mb-2">长续航</h3>
+                            <p class="text-text/70">400张拍摄能力</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 产品细节区 -->
+            <section class="py-20">
+                <div class="container mx-auto px-4">
+                    <div class="flex flex-col lg:flex-row items-center gap-12">
+                        <!-- 产品轮播 -->
+                        <div class="lg:w-1/2" data-aos="fade-right">
+                            <div class="swiper mySwiper rounded-lg overflow-hidden">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <img 
+                                            src="./网页图片/4.jpg" 
+                                            alt="产品规格1" 
+                                            class="w-full h-auto hover:scale-105 transition-transform duration-500"
+                                        />
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <img 
+                                            src="./网页图片/5.jpg" 
+                                            alt="产品规格2" 
+                                            class="w-full h-auto hover:scale-105 transition-transform duration-500"
+                                        />
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <img 
+                                            src="./网页图片/6.jpg" 
+                                            alt="产品规格3" 
+                                            class="w-full h-auto hover:scale-105 transition-transform duration-500"
+                                        />
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <img 
+                                            src="./网页图片/7.jpg" 
+                                            alt="产品规格4" 
+                                            class="w-full h-auto hover:scale-105 transition-transform duration-500"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- 参数列表 -->
+                        <div class="lg:w-1/2" data-aos="fade-left">
+                            <h2 class="text-3xl font-bold mb-8">产品规格</h2>
+                            <div class="space-y-6">
+                                <div class="flex items-center justify-between py-2 border-b border-border">
+                                    <div class="flex items-center">
+                                        <span class="text-xl mr-3">📷</span>
+                                        <span class="text-text/80">传感器</span>
+                                    </div>
+                                    <span class="font-medium">全画幅 4500万像素</span>
+                                </div>
+                                <div class="flex items-center justify-between py-2 border-b border-border">
+                                    <div class="flex items-center">
+                                        <span class="text-xl mr-3">🎥</span>
+                                        <span class="text-text/80">视频</span>
+                                    </div>
+                                    <span class="font-medium">4K 60fps</span>
+                                </div>
+                                <div class="flex items-center justify-between py-2 border-b border-border">
+                                    <div class="flex items-center">
+                                        <span class="text-xl mr-3">⚡</span>
+                                        <span class="text-text/80">对焦</span>
+                                    </div>
+                                    <span class="font-medium">256点相位检测</span>
+                                </div>
+                                <div class="flex items-center justify-between py-2 border-b border-border">
+                                    <div class="flex items-center">
+                                        <span class="text-xl mr-3">🔋</span>
+                                        <span class="text-text/80">续航</span>
+                                    </div>
+                                    <span class="font-medium">400张</span>
+                                </div>
+                                <div class="flex items-center justify-between py-2 border-b border-border">
+                                    <div class="flex items-center">
+                                        <span class="text-xl mr-3">⚖️</span>
+                                        <span class="text-text/80">重量</span>
+                                    </div>
+                                    <span class="font-medium">420g</span>
+                                </div>
+                                <div class="flex items-center justify-between py-2 border-b border-border">
+                                    <div class="flex items-center">
+                                        <span class="text-xl mr-3">💾</span>
+                                        <span class="text-text/80">存储</span>
+                                    </div>
+                                    <span class="font-medium">双SD卡槽</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 场景化展示区 -->
+            <section class="py-20 bg-surface">
+                <div class="container mx-auto px-4">
+                    <div class="max-w-3xl mx-auto text-center mb-16" data-aos="fade-up">
+                        <h2 class="text-3xl font-bold mb-4">使用场景</h2>
+                        <p class="text-text/80">随时随地，捕捉美好</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="overflow-hidden rounded-lg" data-aos="fade-up">
+                            <img 
+                                src="./网页图片/1.jpg" 
+                                alt="使用场景1" 
+                                class="w-full h-auto hover:scale-105 transition-transform duration-500"
+                            />
+                        </div>
+                        <div class="overflow-hidden rounded-lg" data-aos="fade-up" data-aos-delay="100">
+                            <img 
+                                src="./网页图片/2.jpg" 
+                                alt="使用场景2" 
+                                class="w-full h-auto hover:scale-105 transition-transform duration-500"
+                            />
+                        </div>
+                        <div class="overflow-hidden rounded-lg" data-aos="fade-up" data-aos-delay="200">
+                            <img 
+                                src="./网页图片/3.jpg" 
+                                alt="使用场景3" 
+                                class="w-full h-auto hover:scale-105 transition-transform duration-500"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 用户评价/口碑区 -->
+            <section class="py-20">
+                <div class="container mx-auto px-4">
+                    <div class="max-w-3xl mx-auto text-center mb-16" data-aos="fade-up">
+                        <h2 class="text-3xl font-bold mb-4">用户评价</h2>
+                        <p class="text-text/80">来自创作者的真实反馈</p>
+                    </div>
+                    
+                    <div class="flex flex-wrap justify-center gap-4" data-aos="fade-up">
+                        <div class="bg-surface px-6 py-3 rounded-full border border-border">质感高级</div>
+                        <div class="bg-surface px-6 py-3 rounded-full border border-border">轻便好带</div>
+                        <div class="bg-surface px-6 py-3 rounded-full border border-border">出片干净</div>
+                        <div class="bg-surface px-6 py-3 rounded-full border border-border">操作简单</div>
+                        <div class="bg-surface px-6 py-3 rounded-full border border-border">续航持久</div>
+                        <div class="bg-surface px-6 py-3 rounded-full border border-border">对焦迅速</div>
+                        <div class="bg-surface px-6 py-3 rounded-full border border-border">画质出色</div>
+                        <div class="bg-surface px-6 py-3 rounded-full border border-border">设计简约</div>
+                    </div>
+                    
+                    <div class="mt-12 flex justify-center space-x-4" data-aos="fade-up">
+                        <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center">
+                            <span class="text-sm font-medium">1</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center">
+                            <span class="text-sm font-medium">2</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center">
+                            <span class="text-sm font-medium">3</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center">
+                            <span class="text-sm font-medium">4</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center">
+                            <span class="text-sm font-medium">5</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 购买与预约区 -->
+            <section class="py-20 bg-surface">
+                <div class="container mx-auto px-4">
+                    <div class="max-w-2xl mx-auto bg-white p-8 md:p-12 rounded-lg border border-border" data-aos="fade-up">
+                        <h2 class="text-3xl font-bold mb-8 text-center">立即购买</h2>
+                        
+                        <!-- 版本选择 -->
+                        <div class="flex mb-8 border border-border rounded-lg overflow-hidden">
+                            <button id="basic-tab" class="flex-1 py-3 text-center bg-primary text-white">基础版</button>
+                            <button id="pro-tab" class="flex-1 py-3 text-center bg-white text-text">进阶版</button>
+                        </div>
+                        
+                        <!-- 价格 -->
+                        <div class="text-center mb-8">
+                            <span id="price" class="text-4xl font-bold">¥6,999</span>
+                            <p id="price-desc" class="text-text/70 mt-2">含标准镜头</p>
+                        </div>
+                        
+                        <!-- 购买按钮 -->
+                        <div class="space-y-4">
+                            <button class="w-full py-4 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                                立即购买
+                            </button>
+                            <button class="w-full py-4 border border-border rounded-lg hover:border-primary hover:text-primary transition-colors">
+                                预约体验
+                            </button>
+                        </div>
+                        
+                        <!-- FAQ -->
+                        <div class="mt-12">
+                            <h3 class="text-lg font-semibold mb-6">常见问题</h3>
+                            <div class="space-y-4">
+                                <div class="border-b border-border pb-4">
+                                    <p class="font-medium mb-2">保修政策？</p>
+                                    <p class="text-text/70">整机保修1年，镜头保修2年</p>
+                                </div>
+                                <div class="border-b border-border pb-4">
+                                    <p class="font-medium mb-2">发货时间？</p>
+                                    <p class="text-text/70">下单后3-5个工作日发货</p>
+                                </div>
+                                <div class="border-b border-border pb-4">
+                                    <p class="font-medium mb-2">支持退换吗？</p>
+                                    <p class="text-text/70">7天无理由退换，15天质量问题退换</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="py-12 border-t border-border">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="text-xl font-semibold mb-4 md:mb-0">CAMERA</div>
+                    <div class="flex space-x-6 mb-4 md:mb-0">
+                        <a href="#" class="text-text/70 hover:text-text transition-colors">隐私政策</a>
+                        <a href="#" class="text-text/70 hover:text-text transition-colors">服务条款</a>
+                    </div>
+                    <div class="text-text/50 text-sm">© 2024 CAMERA. 保留所有权利。</div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // 导航栏滚动效果
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-white/80', 'backdrop-blur-md', 'shadow-sm');
+                navbar.classList.remove('bg-transparent');
+            } else {
+                navbar.classList.remove('bg-white/80', 'backdrop-blur-md', 'shadow-sm');
+                navbar.classList.add('bg-transparent');
+            }
+        });
+
+        // 移动端菜单
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            const svg = menuToggle.querySelector('svg');
+            if (mobileMenu.classList.contains('hidden')) {
+                svg.innerHTML = `
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                `;
+            } else {
+                svg.innerHTML = `
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                `;
+            }
+        });
+
+        // 版本选择
+        const basicTab = document.getElementById('basic-tab');
+        const proTab = document.getElementById('pro-tab');
+        const price = document.getElementById('price');
+        const priceDesc = document.getElementById('price-desc');
+
+        basicTab.addEventListener('click', () => {
+            basicTab.classList.add('bg-primary', 'text-white');
+            basicTab.classList.remove('bg-white', 'text-text');
+            proTab.classList.add('bg-white', 'text-text');
+            proTab.classList.remove('bg-primary', 'text-white');
+            price.textContent = '¥6,999';
+            priceDesc.textContent = '含标准镜头';
+        });
+
+        proTab.addEventListener('click', () => {
+            proTab.classList.add('bg-primary', 'text-white');
+            proTab.classList.remove('bg-white', 'text-text');
+            basicTab.classList.add('bg-white', 'text-text');
+            basicTab.classList.remove('bg-primary', 'text-white');
+            price.textContent = '¥8,999';
+            priceDesc.textContent = '含标准镜头 + 长焦镜头';
+        });
+
+        // 初始化 Swiper
+        document.addEventListener('DOMContentLoaded', function() {
+            new Swiper('.mySwiper', {
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                mousewheel: true,
+                keyboard: true,
+            });
+        });
+
+        // 简单的滚动动画
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // 观察所有带有 data-aos 属性的元素
+        document.querySelectorAll('[data-aos]').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
